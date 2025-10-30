@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "intens-cloud-managament-daemon.fullname" . }}
+  labels:
+    {{- include "intens-cloud-managament-daemon.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "intens-cloud-managament-daemon.selectorLabels" . | nindent 6 }}
+  ports:
+    - name: http
+      port: 3000
+      targetPort: flask-port
+
+  type: ClusterIP

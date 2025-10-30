@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "intens-cloud-managament-daemon.fullname" . }}
+  labels:
+    {{- include "intens-cloud-managament-daemon.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "intens-cloud-managament-daemon.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        k8s.grafana.com/scrape: "true"
+        k8s.grafana.com/metrics.path: /metrics
+        k8s.grafana.com/metrics.portNumber: "3000"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
+      labels:
+        {{- include "intens-cloud-managament-daemon.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 3000
+          name: flask-port
+        env:
+          - name: CONFIG_CONTROLLER_URL
+            value: "{{ .Values.configController.url }}"
+          {{- if .Values.otel.enabled }}
+          - name: OTEL_SERVICE_NAME
+            value: management-daemon
+          - name: OTEL_TRACES_EXPORTER
+            value: otlp_proto_http
+          - name: OTEL_METRICS_EXPORTER
+            value: none
+          - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+            value: "{{ .Values.otel.endpoint }}"
+          {{- end }}
+          - name: KEYCLOAK_URL
+            value: "{{ .Values.keycloak.url }}"
+          - name: KEYCLOAK_USERNAME
+            value: "{{ .Values.keycloak.username }}"
+          - name: KEYCLOAK_REALM
+            value: "{{ .Values.keycloak.realm }}"
+          - name: KEYCLOAK_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: management-daemon-password
+                key: keycloak-password

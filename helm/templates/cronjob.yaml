@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "intens-cloud-managament-daemon.fullname" . }}-cleanup-trigger
+  labels:
+    {{- include "intens-cloud-managament-daemon.labels" . | nindent 4 }}
+spec:
+  schedule: "@hourly"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: management-daemon-cleanup-trigger
+              image: "quay.io/curl/curl"
+              imagePullPolicy: IfNotPresent
+              args:
+                - http://{{ include "intens-cloud-managament-daemon.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:3000/clean

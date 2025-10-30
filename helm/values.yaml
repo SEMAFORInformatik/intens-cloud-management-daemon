@@ -1,0 +1,25 @@
+# Default values for intens-cloud-managament-daemon.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/semaforinformatik/intens-cloud-management-daemon
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+nameOverride: ""
+fullnameOverride: ""
+
+keycloak:
+  url:
+  username:
+  password: ""
+  realm: ""
+
+configController:
+  url: http://config-controller:3333
+
+otel:
+  enabled: false
+  endpoint: http://grafana-k8s-monitoring-alloy.monitoring.svc.cluster.local:4318/v1/traces
