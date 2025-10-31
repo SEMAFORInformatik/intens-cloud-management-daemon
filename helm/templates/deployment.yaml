@@ -52,3 +52,8 @@ spec:
               secretKeyRef:
                 name: management-daemon-password
                 key: keycloak-password
+
+      {{- if .Values.imageCredentials }}
+      imagePullSecrets:
+        - name: {{ include "intens-cloud-managament-daemon.fullname" . }}-registry
+      {{ end }}
