@@ -50,7 +50,7 @@ spec:
           - name: KEYCLOAK_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: management-daemon-password
+                name: {{ include "intens-cloud-managament-daemon.fullname" . }}-password
                 key: keycloak-password
 
       {{- if .Values.imageCredentials }}
