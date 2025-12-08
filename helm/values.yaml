@@ -17,10 +17,13 @@ nameOverride: ""
 fullnameOverride: ""
 
 keycloak:
+  enabled: true
   url:
   username:
   password: ""
   realm: ""
+
+simpleTimeout:
 
 configController:
   url: http://config-controller:3333

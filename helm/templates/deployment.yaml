@@ -41,6 +41,7 @@ spec:
           - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
             value: "{{ .Values.otel.endpoint }}"
           {{- end }}
+          {{- if .Values.keycloak.enabled }}
           - name: KEYCLOAK_URL
             value: "{{ .Values.keycloak.url }}"
           - name: KEYCLOAK_USERNAME
@@ -52,6 +53,10 @@ spec:
               secretKeyRef:
                 name: {{ include "intens-cloud-managament-daemon.fullname" . }}-password
                 key: keycloak-password
+          {{ else }}
+          - name: SIMPLE_TIMEOUT
+            value: "{{ .Values.simpleTimeout }}"
+          {{- end }}
 
       {{- if .Values.imageCredentials }}
       imagePullSecrets:

@@ -16,16 +16,17 @@ open_apps = Gauge('open_apps', 'amount of open apps', [
 
 @bp.before_request
 def gather_metrics():
-    user_counter = dict()
-    for s in get_sessions():
-        if s['username'] not in user_counter:
-            user_counter[s['username']] = 0
-        user_counter[s['username']] += 1
+    if hasattr(flask.current_app, 'keycloak_admin'):
+        user_counter = dict()
+        for s in get_sessions():
+            if s['username'] not in user_counter:
+                user_counter[s['username']] = 0
+            user_counter[s['username']] += 1
 
-    user_sessions.clear()
+        user_sessions.clear()
 
-    for user, count in user_counter.items():
-        user_sessions.labels(user).set(count)
+        for user, count in user_counter.items():
+            user_sessions.labels(user).set(count)
 
     open_apps.clear()
 

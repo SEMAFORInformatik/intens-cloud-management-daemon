@@ -4,10 +4,12 @@ RUN adduser --disabled-password --gecos '' app
 ARG REVISION
 
 WORKDIR /app
-COPY . .
+COPY requirements.txt .
 # install the library dependencies for this application
 RUN pip3 install --no-cache-dir  -r requirements.txt && opentelemetry-bootstrap -a install; \
   [ -z "$REVISION" ] ||echo "$REVISION" > vcs.info
+
+COPY . .
 
 ENV FLASK_APP="manager"
 ENV SERVICE_PORT=3000
