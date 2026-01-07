@@ -24,7 +24,7 @@ class Config(object):
     CONFIG_MAP_SELECTOR = os.environ.get(
         'CONFIGMAP_SELECTOR', 'config-controller.semafor.ch/template')
     CONFIG_CONTROLLER_URL = os.getenv('CONFIG_CONTROLLER_URL')
-    SIMPLE_TIMEOUT = int(os.getenv('SIMPLE_TIMEOUT'))
+    SIMPLE_TIMEOUT = int(os.environ.get('SIMPLE_TIMEOUT', '7200'))
     KEYCLOAK_URL = os.getenv('KEYCLOAK_URL')
     KEYCLOAK_USERNAME = os.getenv('KEYCLOAK_USERNAME')
     KEYCLOAK_PASSWORD = os.getenv('KEYCLOAK_PASSWORD')
