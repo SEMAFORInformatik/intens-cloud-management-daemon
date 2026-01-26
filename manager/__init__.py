@@ -18,7 +18,7 @@ def make_app():
                     config.name, app.config['VCS_INFO'])
 
     # if we don't use a simple timeout to clean up apps, use keycloak instead
-    if not app.config['SIMPLE_TIMEOUT']:
+    if app.config['KEYCLOAK_URL']:
         app.keycloak_admin = KeycloakAdmin(
             server_url=app.config['KEYCLOAK_URL'],
             username=app.config['KEYCLOAK_USERNAME'],
