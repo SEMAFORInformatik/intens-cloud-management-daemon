@@ -25,6 +25,7 @@ def make_app():
             password=app.config['KEYCLOAK_PASSWORD'],
             realm_name=app.config['KEYCLOAK_REALM'],
             user_realm_name='master')
+        app.logger.info("initialized with keycloak")
 
     @app.route('/info', methods=['GET'])
     def get_info():

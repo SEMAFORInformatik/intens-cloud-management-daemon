@@ -19,6 +19,7 @@ def get_open_apps():
 
 
 def clean_keycloak():
+    app.logger.info("Cleaning with keycloak")
     config_controller_url = app.config['CONFIG_CONTROLLER_URL']
     count = 0
     session_ids = [session['id'] for session in get_sessions()]
@@ -42,6 +43,7 @@ def clean_keycloak():
 
 
 def clean_timeout():
+    app.logger.info("Cleaning with timeout")
     config_controller_url = app.config['CONFIG_CONTROLLER_URL']
     count = 0
     apps = requests.get(f'{config_controller_url}/app').json()
