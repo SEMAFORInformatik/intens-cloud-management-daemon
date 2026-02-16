@@ -52,7 +52,7 @@ def clean_timeout():
             f'{config_controller_url}/app/{cc_app}').json()
         for inst in instances:
             # if it has no marking for connectedness, we will let it run
-            is_connected = inst.get('connected', 'true') == 'true'
+            is_connected = inst.get('connected', 'false') == 'true'
             if is_connected:
                 continue
 
