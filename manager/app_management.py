@@ -58,6 +58,8 @@ def clean_timeout():
 
             # get it in seconds
             last_connection = int(inst.get('lastConnection', 0)) / 1000
+            if last_connection == 0:
+                last_connection = inst.get('start', 0)
             if last_connection + app.config['SIMPLE_TIMEOUT'] > time.time():
                 continue
 
