@@ -7,11 +7,13 @@ bp = flask.Blueprint('metrics', __name__)
 registry = CollectorRegistry()
 
 
-user_sessions = Gauge('user_sessions', 'amount of open user sessions', [
-                      'user'], registry=registry)
+user_sessions = Gauge(
+    'user_sessions', 'amount of open user sessions', ['user'], registry=registry
+)
 
-open_apps = Gauge('open_apps', 'amount of open apps', [
-                  'app', 'user'], registry=registry)
+open_apps = Gauge(
+    'open_apps', 'amount of open apps', ['app', 'user'], registry=registry
+)
 
 
 @bp.before_request

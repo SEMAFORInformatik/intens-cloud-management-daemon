@@ -9,6 +9,7 @@ def vcs_info():
     if g.exists():
         return g.read_text().strip()
     import subprocess
+
     try:
         p = subprocess.run(['git', 'describe'], capture_output=True)
         if p.returncode == 0:
@@ -22,7 +23,8 @@ class Config(object):
     VCS_INFO = vcs_info()
     NAMESPACE = os.environ.get('JOB_NAMESPACE', 'default')
     CONFIG_MAP_SELECTOR = os.environ.get(
-        'CONFIGMAP_SELECTOR', 'config-controller.semafor.ch/template')
+        'CONFIGMAP_SELECTOR', 'config-controller.semafor.ch/template'
+    )
     CONFIG_CONTROLLER_URL = os.getenv('CONFIG_CONTROLLER_URL')
     SIMPLE_TIMEOUT = int(os.environ.get('SIMPLE_TIMEOUT', '7200'))
     KEYCLOAK_URL = os.getenv('KEYCLOAK_URL')
