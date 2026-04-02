@@ -51,17 +51,18 @@ def clean_timeout():
         instances = requests.get(
             f'{config_controller_url}/app/{cc_app}').json()
         for inst in instances:
-            # if it has no marking for connectedness, we will let it run
-            is_connected = inst.get('connected', 'false') == 'true'
-            if is_connected:
-                continue
+            if not inst.get('errored', False):
+                # if it has no marking for connectedness, we will let it run
+                is_connected = inst.get('connected', 'false') == 'true'
+                if is_connected:
+                    continue
 
-            # get it in seconds
-            last_connection = int(inst.get('lastConnection', 0)) / 1000
-            if last_connection == 0:
-                last_connection = inst.get('start', 0)
-            if last_connection + app.config['SIMPLE_TIMEOUT'] > time.time():
-                continue
+                # get it in seconds
+                last_connection = int(inst.get('lastConnection', 0)) / 1000
+                if last_connection == 0:
+                    last_connection = inst.get('start', 0)
+                if last_connection + app.config['SIMPLE_TIMEOUT'] > time.time():
+                    continue
 
             app.logger.info(f"""Cleaning {cc_app} instance of session {
                 inst["name"]}""")
